@@ -33,6 +33,7 @@ services:
 
   db:
     image: mysql:8.0
+    container_name: mysql_host
     volumes:
       - db-store:/var/lib/mysql
       - ./logs:/var/log/mysql
@@ -43,6 +44,18 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
       - TZ=${TZ}
+
+
+  phpmyadmin:
+    container_name: test_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOSTS=mysql_host
+    - PMA_USER=${DB_USER}
+    - PMA_PASSWORD=${DB_PASS}
+    ports:
+    - 8080:80
 
 volumes:
   db-store:
